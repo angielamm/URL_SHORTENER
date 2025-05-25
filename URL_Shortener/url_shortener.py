@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Default configuration
-app.config.setdefault('SHORT_URL_BASE', None)  # If None, will use request.host_url
+app.config.setdefault('SHORT_URL_BASE', None) 
 
 # In-memory storage
 url_mappings: Dict[str, Dict] = {}
