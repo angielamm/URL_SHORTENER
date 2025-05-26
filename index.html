@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
-    <link rel="stylesheet" href="/URL_SHORTENER/static/css/style.css">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
     <div class="container">
@@ -14,6 +14,7 @@
         </header>
 
         <main>
+            <!-- URL Shortening Form -->
             <div class="shortener-card">
                 <form id="urlForm" onsubmit="shortenURL(event)">
                     <div class="input-group">
@@ -22,6 +23,7 @@
                     </div>
                 </form>
                 
+                <!-- Result Display -->
                 <div id="result" class="result-container hidden">
                     <h3>Your Shortened URL:</h3>
                     <div class="shortened-url">
@@ -32,6 +34,7 @@
             </div>
         </main>
 
+        <!-- How It Works Section -->
         <section class="how-it-works">
             <h2>How It Works</h2>
             <div class="steps">
@@ -52,16 +55,15 @@
     </div>
 
     <script>
-        // Replace this with your actual Vercel deployment URL
-        const API_URL = 'https://url-shortener-angielamm.vercel.app';
-
         async function shortenURL(event) {
             event.preventDefault();
             const longUrl = document.getElementById('longUrl').value;
             const resultDiv = document.getElementById('result');
             
+            console.log('Sending request for URL:', longUrl); // Debug log
+            
             try {
-                const response = await fetch(`${API_URL}/api/shorten`, {
+                const response = await fetch('/api/shorten', {  // Remove the http://localhost:5000
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -70,11 +72,16 @@
                     body: JSON.stringify({ long_url: longUrl })
                 });
 
+                console.log('Response status:', response.status); // Debug log
+                
                 if (!response.ok) {
+                    const errorText = await response.text();
+                    console.log('Error response:', errorText); // Debug log
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
+                console.log('Success response:', data); // Debug log
                 
                 if (data && data.short_url) {
                     document.getElementById('shortUrl').value = data.short_url;
@@ -96,6 +103,7 @@
             navigator.clipboard.writeText(shortUrl.value)
                 .then(() => alert('URL copied to clipboard!'))
                 .catch(() => {
+                    // Fallback for older browsers
                     shortUrl.select();
                     document.execCommand('copy');
                     alert('URL copied to clipboard!');
@@ -103,4 +111,4 @@
         }
     </script>
 </body>
-</html> 
+</html>
