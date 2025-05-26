@@ -1,1 +1,11 @@
 .vercel
+
+# Virtual environment
+env/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# GitHub Pages
+.github/workflows/static.yml
